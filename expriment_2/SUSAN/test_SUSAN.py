@@ -15,12 +15,12 @@ def k_largest_index_argpartition_v2(a, k):
 
 radius = 10
 img=None
-threshold_T = 10
+threshold_T = 5
 Adjust_G=3
 Under_bound_R = 6
 top_k_range = [5,10,20,30,40,80,160,320]
-filename ='obj'
-pil_im = Image.open('obj.png').convert('L')
+filename ='aver_obj'
+pil_im = Image.open('aver_obj.png').convert('L')
 img = asarray(pil_im)
 
 (x_length, y_length) = img.shape
