@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
 import os
-import string
 import logging
 format ="%(asctime)s.%(msecs)05d : %(message)s"
 logging.basicConfig(format=format,level=logging.INFO,datefmt="%H:%M:%S")
@@ -42,7 +41,7 @@ def SUSAN(radius = 5,img=None,threshold_T = 27,Adjust_G=3,
 
     threshold_G = int(Adjust_G * (circle_mask.sum() - 1) / 4)
     # 指定几何阈值
-    img_R = np.where(threshold_G > copy_img, threshold_G - copy_img, 0)
+    img_R = np.where((threshold_G > copy_img) & (copy_img>radius), threshold_G - copy_img, 0)
     # 输出响应
     dir_name = filename + '_R_' + str(radius) + '_T_' + str(threshold_T) + '_ADJ_G_' + str(Adjust_G)
     try:
@@ -69,8 +68,8 @@ def SUSAN(radius = 5,img=None,threshold_T = 27,Adjust_G=3,
             plt.figure()
             plt.imshow(np.copy(padding_img[y_:y_ + 2 * radius + 1, x_:x_ + 2 * radius + 1]))
             plt.scatter(radius, radius, color='r')
-            plt.title(str((y_, x_)))
-            plt.savefig(dir_name + '/edge/' + str((y_, x_)))
+            plt.title(str((y_, x_))+'_'+str(copy_img[x_][y_]))
+            plt.savefig(dir_name + '/edge/' + str((y_, x_))+'_'+str(img_R[x_][y_]))
             plt.show()
 
 pil_im = Image.open('cha.png').convert('L')
@@ -86,7 +85,7 @@ img = asarray(pil_im)
 # SUSAN(radius=9,img=img,threshold_T=5)
 # SUSAN(radius=11,img=img,threshold_T=5)
 # SUSAN(filename='happy',radius=5,img=img,threshold_T=5,Adjust_G=3)
-SUSAN(filename='cha',radius=5,img=img,threshold_T=40,Adjust_G=3)
+SUSAN(filename='cha',radius=5,img=img,threshold_T=40,Adjust_G=1)
 
 
 
