@@ -3,6 +3,7 @@ from numpy import asarray
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
+import os
 import string
 import logging
 format ="%(asctime)s.%(msecs)05d : %(message)s"
@@ -43,6 +44,12 @@ def SUSAN(radius = 5,img=None,threshold_T = 27,Adjust_G=3,
     # 指定几何阈值
     img_R = np.where(threshold_G > copy_img, threshold_G - copy_img, 0)
     # 输出响应
+    dir_name = filename + '_R_' + str(radius) + '_T_' + str(threshold_T) + '_ADJ_G_' + str(Adjust_G)
+    try:
+        os.mkdir(dir_name)
+        os.mkdir(dir_name+'/edge')
+    except Exception as e:
+        print(e)
     for top_k in top_k_range:
         coner_list = k_largest_index_argpartition_v2(img_R, top_k)
         coner_list_xy = coner_list.T
@@ -50,17 +57,23 @@ def SUSAN(radius = 5,img=None,threshold_T = 27,Adjust_G=3,
         y = coner_list_xy[1].tolist()
         plt.figure()
         plt.scatter(y, x, color='r')
-        name_str =filename +'_R_'+str(radius)+'_T_'+str(threshold_T)+ '_ADJ_G_' + str(Adjust_G) +\
-                  "_top_" + str(top_k)
+        name_str =dir_name+'_' +str(top_k)
         if '.' in name_str:
-            name_str = string.replace('.','_')
+            name_str = name_str.replace('.','_')
         plt.imshow(img_R, cmap=cm.gray)
         plt.title(name_str)
-        plt.savefig(name_str)
+        plt.savefig(dir_name+'/'+name_str)
         plt.show()
 
+        for x_ ,y_ in zip(x,y):
+            plt.figure()
+            plt.imshow(np.copy(padding_img[y_:y_ + 2 * radius + 1, x_:x_ + 2 * radius + 1]))
+            plt.scatter(radius, radius, color='r')
+            plt.title(str((y_, x_)))
+            plt.savefig(dir_name + '/edge/' + str((y_, x_)))
+            plt.show()
 
-pil_im = Image.open('obj_8bit.png').convert('L')
+pil_im = Image.open('cha.png').convert('L')
 img = asarray(pil_im)
 
 # SUSAN(img=img)
@@ -72,7 +85,8 @@ img = asarray(pil_im)
 # SUSAN(radius=9,img=img,threshold_T=10)
 # SUSAN(radius=9,img=img,threshold_T=5)
 # SUSAN(radius=11,img=img,threshold_T=5)
-SUSAN(radius=11,img=img,threshold_T=5,Adjust_G=2.6667)
+# SUSAN(filename='happy',radius=5,img=img,threshold_T=5,Adjust_G=3)
+SUSAN(filename='cha',radius=5,img=img,threshold_T=40,Adjust_G=3)
 
 
 
