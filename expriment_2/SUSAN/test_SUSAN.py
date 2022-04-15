@@ -13,11 +13,11 @@ def k_largest_index_argpartition_v2(a, k):
     idx = np.argpartition(a.ravel(),a.size-k)[-k:]
     return np.column_stack(np.unravel_index(idx, a.shape))
 
-radius = 5
+radius = 10
 img=None
 threshold_T = 10
 Adjust_G=3
-Under_bound_R = 4
+Under_bound_R = 6
 top_k_range = [5,10,20,30,40,80,160,320]
 filename ='obj'
 pil_im = Image.open('obj.png').convert('L')
