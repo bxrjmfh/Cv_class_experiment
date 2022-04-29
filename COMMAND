@@ -1,0 +1,5 @@
+确保转到当前目录
+python -m cProfile -o loops.log expriment_3/K_means_cluster/k_means.py
+生成指定的日志文件
+pip install cprofilev
+安装日志文件分析包
