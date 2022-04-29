@@ -185,7 +185,7 @@ def New_k_means(img=None,k = 4,iter_num = 50,threshold = 0.1,name=''):
         logging.info("SSE : {:.3f}".format(sse / len(flatten_img)))
         logging.info('ΔSSE : {:.3f}'.format(delta_SSE))
         print()
-        if abs(delta_SSE) < threshold:
+        if abs(delta_SSE) < threshold and i>=8:
             break
 
     for kk in range(k):
@@ -198,15 +198,15 @@ def New_k_means(img=None,k = 4,iter_num = 50,threshold = 0.1,name=''):
 
 pil_im = Image.open('/Data/Rice_Bowl/Python/Cv_class_experiment-master/expriment_3/K_means_cluster/daqidawei.jpg')
 # 将彩色图片转化为16 bit的 RGB 格式
-pil_im.thumbnail((400,300))
+# pil_im.thumbnail((400,300))
 # 调整图像大小
 img = asarray(pil_im)
 name='daqidawei_full_image'
-New_k_means(img=img,name=name,k=5)
+# New_k_means(img=img,name=name,k=5)
 # New_k_means(img=img,name=name,k=10)
 # New_k_means(img=img,name=name,k=15)
 # New_k_means(img=img,name=name,k=20)
-# New_k_means(img=img,name=name,k=20)
+New_k_means(img=img,name=name,k=40)
 
 
 
